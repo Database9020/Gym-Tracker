@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase.js';
+import { esc } from '../ui/icons.js';
 
 const masthead = `
   <header class="masthead">
@@ -41,5 +42,17 @@ export function renderNotConfigured(app) {
       <p class="notice">Supabase isn't connected yet.<br />
       Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code>
       in Netlify's environment variables, then redeploy.</p>
+    </main>`;
+}
+
+export function renderError(app, message) {
+  app.innerHTML = `
+    <main class="page login">
+      ${masthead}
+      <p class="notice">Something went wrong starting the app.</p>
+      <p class="notice"><code>${esc(message)}</code></p>
+      <p class="notice">If this mentions the Supabase URL, check <code>VITE_SUPABASE_URL</code> in Netlify
+      is your Project URL, e.g. <code>https://abcd1234.supabase.co</code>, then redeploy.</p>
+      <button class="primary" style="width:100%;margin-top:18px" onclick="location.reload()">Try again</button>
     </main>`;
 }

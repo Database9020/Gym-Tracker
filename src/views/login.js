@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabase.js';
+import { supabase, supabaseUrl } from '../lib/supabase.js';
 import { esc } from '../ui/icons.js';
 
 const masthead = `
@@ -31,7 +31,10 @@ export function renderLogin(app) {
       password: form.password.value,
     });
     btn.disabled = false;
-    if (error) err.textContent = error.message;
+    if (!error) return;
+    err.textContent = /fetch|network/i.test(error.message)
+      ? `Couldn't reach Supabase at ${supabaseUrl}. Check VITE_SUPABASE_URL in Netlify matches your Project URL (Supabase → Project Settings → API), then redeploy.`
+      : error.message;
   });
 }
 
